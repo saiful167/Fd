@@ -1,53 +1,42 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visitor Tracker</title>
+  <title>Visitor Info</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background: #111;
-      color: #fff;
+      color: #0ff;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 2rem;
+      padding: 30px;
     }
-    .box {
+    .info {
       background: #222;
-      padding: 1.5rem;
+      padding: 20px;
       border-radius: 8px;
-      display: inline-block;
-      margin-top: 2rem;
-      border: 1px solid #555;
-    }
-    h1 {
-      color: #00acee;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>🌐 Visitor Tracker</h1>
-  <p>This site tracks visitor's IP, device, and browser info.</p>
-  <div class="box">
-    <p><strong>IP Address:</strong> <span id="ip">Loading...</span></p>
-    <p><strong>Device:</strong> <span id="device">Detecting...</span></p>
-    <p><strong>Browser:</strong> <span id="browser">Detecting...</span></p>
-    <p><strong>Time:</strong> <span id="time">Loading...</span></p>
-  </div>
+  <h1>🌍 Visitor Tracker</h1>
+  <div class="info" id="infoBox">Loading...</div>
 
   <script>
-    document.getElementById("time").innerText = new Date().toLocaleString();
-    document.getElementById("browser").innerText = navigator.userAgent;
-    document.getElementById("device").innerText = navigator.platform;
-
-    fetch("https://api.ipify.org?format=json")
-      .then(res => res.json())
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
       .then(data => {
-        document.getElementById("ip").innerText = data.ip;
-      })
-      .catch(() => {
-        document.getElementById("ip").innerText = "Could not load IP";
+        const info = `
+          <p><strong>IP:</strong> ${data.ip}</p>
+          <p><strong>City:</strong> ${data.city}</p>
+          <p><strong>Region:</strong> ${data.region}</p>
+          <p><strong>Country:</strong> ${data.country_name}</p>
+          <p><strong>Latitude:</strong> ${data.latitude}</p>
+          <p><strong>Longitude:</strong> ${data.longitude}</p>
+          <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+        `;
+        document.getElementById("infoBox").innerHTML = info;
       });
   </script>
 </body>
