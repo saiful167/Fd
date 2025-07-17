@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,58 +10,3 @@
     #map { height: 400px; width: 100%; margin-top: 20px; }
   </style>
 </head>
-<body>
-  <h1>🌐 IP Tracker with Map</h1>
-  <p>Enter IP address:</p>
-  <input type="text" id="ipInput" placeholder="e.g. 8.8.8.8" />
-  <button onclick="getLocation()">Track</button>
-
-  <p id="info"></p>
-  <div id="map"></div>
-
-  <script>
-    async function getLocation() {
-      const ip = document.getElementById("ipInput").value;
-      const info = document.getElementById("info");
-      const map = document.getElementById("map");
-
-      if (!ip) {
-        info.innerText = "Please enter an IP address.";
-        return;
-      }
-
-      info.innerText = "Fetching data...";
-
-      try {
-        const response = await fetch(`https://ipapi.co/${ip}/json/`);
-        const data = await response.json();
-
-        if (data.error) {
-          info.innerText = "❌ Invalid IP or rate limited.";
-          map.innerHTML = "";
-          return;
-        }
-
-        const lat = data.latitude;
-        const lon = data.longitude;
-
-        info.innerHTML = `
-          <strong>IP:</strong> ${data.ip}<br>
-          <strong>City:</strong> ${data.city}<br>
-          <strong>Region:</strong> ${data.region}<br>
-          <strong>Country:</strong> ${data.country_name}<br>
-          <strong>Latitude:</strong> ${lat}<br>
-          <strong>Longitude:</strong> ${lon}
-        `;
-
-        map.innerHTML = `<iframe width="100%" height="400" frameborder="0"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.02}%2C${lat-0.02}%2C${lon+0.02}%2C${lat+0.02}&layer=mapnik&marker=${lat}%2C${lon}"
-          style="border:1px solid #ccc;"></iframe>`;
-      } catch (e) {
-        info.innerText = "❌ Could not fetch location.";
-        map.innerHTML = "";
-      }
-    }
-  </script>
-</body>
-</html>
